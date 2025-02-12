@@ -1,0 +1,1 @@
+nextflow run workflow3.nf -params-file params.yml -c nxt.config3  -profile vsc4 --stdout "/gpfs/data/fs71707/mwielsch1/SA_EPI/nxt_max/nxt_stdout" --rep_name testfinal

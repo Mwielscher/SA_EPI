@@ -1,0 +1,34 @@
+def trace_timestamp = new java.util.Date().format( 'yyyy-MM-dd_HH-mm')
+trace {
+    enabled = true
+    file = "${params.stdout}/${params.rep_name}_pipeline_trace_${trace_timestamp}.txt"
+}
+report {
+    enabled = true
+    file = "${params.stdout}/${params.rep_name}_pipeline_report_${trace_timestamp}.html"
+}
+
+process.executor = 'slurm'
+process.errorStrategy = 'ignore'
+
+profiles {
+    vsc4 {
+        pullTimeout = "200 min"
+        workDir = "/gpfs/data/fs71707/mwielsch1/SA_EPI/nxt_max/work"
+
+        singularity.enabled = true
+        singularity.autoMounts = true
+        singularity.runOptions = "--bind /gpfs/data/fs71707/mwielsch1/SA_EPI/"
+        singularity.cacheDir = "/gpfs/data/fs71707/mwielsch1/SA_EPI/nxt_max/simg"
+    }
+}
+
+process {
+    withName: 'SPADES|PILON' {
+        clusterOptions = '-p skylake_0096 --qos=skylake_0096 -N 1 --tasks-per-node=15'
+    }
+
+    withName: 'PREPROCESS|PREPPILON|QUASTCOLLECT|QCRESULTS|CHECKM|RAGOUTASSEMBLY|MERGE|MLST|AMRFINDER|PROKKA|GENOMAD|CHECKV|PADLOC|PHAROKKA|PHAROTTER' {
+        clusterOptions = '-p skylake_0096 --qos=skylake_0096 --ntasks=15 --mem=32GB'
+    }
+}
