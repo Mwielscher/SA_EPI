@@ -1,19 +1,19 @@
 #!/bin/bash
 
-INPUT_FILE="srr_list2.txt"  # File containing list of SRR IDs
-OUTPUT_DIR="/gpfs/data/fs71707/mwielsch1/SA_EPI/NCBI_FASTQ/test_collection/"  # Directory to save FASTQ files
-
-# Ensure output directory exists
-mkdir -p "$OUTPUT_DIR"
+INPUT_FILE="samples_run1.txt"  # File containing list of Sample IDs and SRR IDs
+OUTPUT_DIR="/gpfs/data/fs71707/mwielsch1/SA_EPI/NCBI_FASTQ/run_1/"  # Directory to save FASTQ files
 
 # Ensure output directory exists
 mkdir -p "$OUTPUT_DIR"
 
 echo "📥 Downloading FASTQ files for runs listed in $INPUT_FILE..."
 
-# Process each SRR/ERR ID
-while IFS= read -r srr_id; do
-    echo "🚀 Processing: $srr_id"
+# Process each line, extracting only the SRR ID (second column)
+while IFS=$'\t' read -r sample_id srr_id; do
+    # Skip empty lines
+    [[ -z "$srr_id" ]] && continue
+    
+    echo "🚀 Processing: $srr_id (Sample: $sample_id)"
 
     # Download the SRA file with a 1GB size limit
     prefetch "$srr_id" --max-size 1G  
@@ -34,12 +34,13 @@ while IFS= read -r srr_id; do
 
         # Cleanup: Remove downloaded SRA files to save space
         echo "🧹 Removing temporary SRA files..."
-        rm -f "$srr_id".sra
+        rm -f "$srr_id.sra"
     else
         echo "❌ Error: Failed to download $srr_id. Skipping..."
     fi
 
     echo "✅ Finished processing: $srr_id"
-done < "$INPUT_FILE"
+done < <(awk '{print $1}' "$INPUT_FILE")
 
 echo "🎉 All downloads complete! FASTQ files are saved in $OUTPUT_DIR."
+
