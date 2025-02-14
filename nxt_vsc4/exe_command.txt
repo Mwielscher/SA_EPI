@@ -1,0 +1,1 @@
+nextflow run workflow.nf -params-file params.yml -c nxt_vsc4.config --stdout "/gpfs/data/fs71707/mgabr/nxt_stdout" --rep_name run_1

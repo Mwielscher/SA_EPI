@@ -1,0 +1,11 @@
+    publish_name: 'run_1/'
+    file_path: '/gpfs/data/fs71707/mwielsch1/SA_EPI/NCBI_FASTQ/run_1/'
+    file_name: '*_{1,2}.fastq'
+    publish_path: '/gpfs/data/fs71707/mwielsch1/SA_EPI/RESULTS/'
+    trim_adapter: '/gpfs/data/fs71707/mwielsch1/SA_EPI/nxt_max/REF/NexteraPE-PE.fa'
+    homo_sapiens_ref: '/gpfs/data/fs71707/mwielsch1/SA_EPI/nxt_max/REF/GRCh38/Homo_sapiens_GRCh38'
+
+    checkm_db: '/gpfs/data/fs71707/mwielsch1/SA_EPI/nxt_max/REF/checkm'
+    saureus_ref: '/gpfs/data/fs71707/mwielsch1/SA_EPI/nxt_max/REF/S_aureus_NCTC8325.fna'
+    genomad_db: '/gpfs/data/fs71707/mwielsch1/SA_EPI/nxt_max/REF/genomad_db'
+    pharokka_db: '/gpfs/data/fs71707/mwielsch1/SA_EPI/nxt_max/REF/pharokka_db'
